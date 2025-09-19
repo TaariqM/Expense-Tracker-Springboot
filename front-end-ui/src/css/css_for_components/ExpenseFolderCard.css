@@ -1,0 +1,10 @@
+.expense-card {
+  width: 18rem;
+  min-width: 12rem;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}

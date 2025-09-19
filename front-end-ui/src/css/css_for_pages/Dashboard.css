@@ -1,0 +1,22 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-container-content {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.dashboard-container-title {
+  margin-top: 50px;
+}
+
+.dashboard-container-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
