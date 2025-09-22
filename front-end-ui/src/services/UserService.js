@@ -17,14 +17,18 @@ export const getUser = async (id) => {
 };
 
 export const addUser = async (user) => {
-  try {
-    const response = await axios.post(API_URL, user);
-    const result = response.data;
-    localStorage.setItem("userId", result.id);
-    return result;
-  } catch (error) {
-    console.log("Error registering new user: ", error);
-  }
+  const response = await axios.post(API_URL, user);
+  const result = response.data;
+  localStorage.setItem("userId", result.id);
+  return result;
+  // try {
+  //   const response = await axios.post(API_URL, user);
+  //   const result = response.data;
+  //   localStorage.setItem("userId", result.id);
+  //   return result;
+  // } catch (error) {
+  //   console.log("Error registering new user: ", error);
+  // }
 };
 
 export const deleteUser = async (id) => {

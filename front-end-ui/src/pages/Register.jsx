@@ -39,7 +39,12 @@ const Register = () => {
       const newUser = await addUser(user);
       navigate(`/dashboard/${newUser.id}`);
     } catch (err) {
-      console.error("Failure submitting registration:", err);
+      // console.error("Failure submitting registration:", err);
+      if (err.response && err.response.status === 409) {
+        setErrors({ email: "This email is already registered." });
+      } else {
+        setErrors({ general: "Registration failed. Please try again." });
+      }
     }
     // alert("User added");
   };

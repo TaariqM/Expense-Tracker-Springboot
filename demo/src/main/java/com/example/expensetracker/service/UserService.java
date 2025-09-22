@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.example.expensetracker.entity.User;
 import com.example.expensetracker.repository.UserRepository;
+import com.example.expensetracker.exception.EmailAlreadyExistsException;
 
 @Service
 public class UserService {
@@ -40,15 +41,12 @@ public class UserService {
     // }
 
     public ResponseEntity<User> addUser(User user) {
-        User newUser = new User();
-        try {
-            newUser = userRepository.save(user);
+        // Check if email already exists
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            throw new EmailAlreadyExistsException("Email already exists: " + user.getEmail());
         }
-        catch(Exception e) {
-            System.out.println("Java Error at adding new user: " + e);
-        }
-        // return newUser;
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser); //wraps the new user in a 200 OK response
+        User newUser = userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     public void deleteUser(Integer id) {
