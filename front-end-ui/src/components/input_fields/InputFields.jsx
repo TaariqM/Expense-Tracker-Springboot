@@ -16,6 +16,14 @@ const InputFields = ({
   return (
     <div className="form-container">
       <form onSubmit={handleSubmitCallback}>
+        {errors.general && (
+          <div
+            className="error-text"
+            style={{ color: "red", marginBottom: "1em" }}
+          >
+            {errors.general}
+          </div>
+        )}
         {inputLabels.map((labl, idx) => {
           const name = labl.replace(/\s+/g, "").toLowerCase();
           return (

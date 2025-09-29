@@ -35,6 +35,34 @@ public class UserService {
         
         return currentUser;
     }
+    
+    public ResponseEntity<?> loginUser(String email, String password) {
+        if (userRepository.findByEmail(email) == null) { 
+            // throw new RuntimeException("User not found with email: " + email);
+            // 404 Not Found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with email: " + email);
+        }
+
+        User user = userRepository.findByEmail(email);
+        if (!user.getPassword().equals(password)) {
+            // throw new RuntimeException("Incorrect password for email: " + email);
+            // 401 Unauthorized
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect password for email: " + email);
+        }
+
+        return ResponseEntity.ok(user);
+        // return Optional.of(user);
+        // Optional<User> currentUser = java.util.Optional.empty();
+        // try {
+        //     currentUser = userRepository.findById(id);
+        //     // System.out.println(number);
+        // }
+        // catch (Exception e) {
+        //     System.out.println("Java Error at getting user: " + e);
+        // }
+        
+        // return currentUser;
+    }
 
     // public int getNumber() {
     //     return number;

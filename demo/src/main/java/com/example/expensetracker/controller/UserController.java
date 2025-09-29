@@ -2,6 +2,7 @@ package com.example.expensetracker.controller;
 
 import java.util.List;
 // import java.util.Optional;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,12 +36,24 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable Integer id) {
-        return new UserDTO(userService.getUser(id).get());
+    public ResponseEntity<?> getUserById(@PathVariable Integer id) {
+        Optional<User> currentUserOpt = userService.getUser(id);
+        if (currentUserOpt.isPresent()) {
+            return ResponseEntity.ok(new UserDTO(currentUserOpt.get()));
+        } else {
+            return ResponseEntity.status(404).body("User not found");
+        }
+        // return new UserDTO(userService.getUser(id).get());
+        // return userService.getUser(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{email}/{password}")
+    public ResponseEntity<?> loginUser(@PathVariable String email, @PathVariable String password) {
+        return userService.loginUser(email, password);
+        // return new UserDTO(userService.loginUser(email, password).get());
         // return userService.getUser(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
     
-
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return userService.addUser(user);
