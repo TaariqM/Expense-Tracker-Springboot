@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { addFolder, modifyFolder } from "../../services/FolderService";
+import { useCsrf } from "../../context/CsrfTokenContext";
 import { Modal, Button } from "react-bootstrap";
 // import "../../css/css_for_components/Modal.css";
 import "../../css/css_for_components/DeleteModal.css";
@@ -20,6 +21,7 @@ const FolderModal = ({
     folderDescription: "",
   });
   const [error, setError] = useState(false);
+  const { csrfToken } = useCsrf();
 
   // when editing the folder, have the form prefilled with the previous folder values
   useEffect(() => {
@@ -58,10 +60,11 @@ const FolderModal = ({
       updatedFolder = await modifyFolder(
         userId,
         folder.expenseFolderId,
-        folderInfo
+        folderInfo,
+        csrfToken
       );
     } else {
-      updatedFolder = await addFolder(userId, folderInfo);
+      updatedFolder = await addFolder(userId, folderInfo, csrfToken);
       console.log(updatedFolder);
     }
 

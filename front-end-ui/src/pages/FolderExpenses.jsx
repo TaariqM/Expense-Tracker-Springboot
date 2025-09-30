@@ -6,6 +6,7 @@ import {
   updateExpenseForFolder,
   deleteExpenseForFolder,
 } from "../services/ExpenseService";
+import { useCsrf } from "../context/CsrfTokenContext";
 import NavigationBar from "../components/navigation/NavigationBar";
 import EditExpenseForm from "../components/expenses/EditExpenseForm";
 import "../css/css_for_pages/FolderExpenses.css";
@@ -16,6 +17,7 @@ const FolderExpenses = () => {
   const [showForm, setShowForm] = useState(false);
   const [newExpense, setNewExpense] = useState({ title: "", amount: "" });
   const [editingExpense, setEditingExpense] = useState(null); // holds expense being edited
+  const { csrfToken } = useCsrf();
   // const [title, setTitle] = useState("");
   // const [amount, setAmount] = useState("");
 
@@ -39,7 +41,12 @@ const FolderExpenses = () => {
   const handleAddExpense = async (e) => {
     e.preventDefault();
     try {
-      const addedExpense = await addExpenseToFolder(id, folderId, newExpense);
+      const addedExpense = await addExpenseToFolder(
+        id,
+        folderId,
+        newExpense,
+        csrfToken
+      );
       setExpenses([...expenses, addedExpense]);
       setNewExpense({ title: "", amount: "" });
       setShowForm(false);
@@ -57,7 +64,8 @@ const FolderExpenses = () => {
       id,
       folderId,
       expenseId,
-      updatedData
+      updatedData,
+      csrfToken
     );
     if (updated) {
       setExpenses((prev) =>
@@ -70,7 +78,7 @@ const FolderExpenses = () => {
   const handleDelete = async (expenseId) => {
     // you probably already have a delete service; just call it here
     try {
-      await deleteExpenseForFolder(id, folderId, expenseId);
+      await deleteExpenseForFolder(id, folderId, expenseId, csrfToken);
       setExpenses((prev) => prev.filter((e) => e.expenseId !== expenseId));
     } catch (err) {
       console.error("Error deleting expense: ", err);
@@ -133,8 +141,8 @@ const FolderExpenses = () => {
                       className="btn btn-sm btn-primary me-2"
                       onClick={() => {
                         setEditingExpense(expense);
-                        setTitle(expense.title);
-                        setAmount(expense.amount);
+                        // setTitle(expense.title);
+                        // setAmount(expense.amount);
                       }}
                     >
                       Edit

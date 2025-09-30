@@ -1,5 +1,6 @@
 import { Modal, Button } from "react-bootstrap";
 import { deleteFolder } from "../../services/FolderService";
+import { useCsrf } from "../../context/CsrfTokenContext";
 import "../../css/css_for_components/DeleteModal.css";
 
 const DeleteModal = ({
@@ -10,6 +11,7 @@ const DeleteModal = ({
   onClose,
   onFolderDeleted,
 }) => {
+  const { csrfToken } = useCsrf();
   const handleDelete = async () => {
     // alert("delete button");
     // if (!folder) {
@@ -17,7 +19,7 @@ const DeleteModal = ({
     // }
 
     try {
-      await deleteFolder(userId, folder.expenseFolderId);
+      await deleteFolder(userId, folder.expenseFolderId, csrfToken);
       onFolderDeleted(folder.expenseFolderId);
     } catch (err) {
       console.error("Error deleting folder: ", err);

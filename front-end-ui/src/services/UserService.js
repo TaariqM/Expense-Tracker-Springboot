@@ -26,21 +26,23 @@ export const loginUser = async (email, password) => {
   // }
 };
 
-export const addUser = async (user) => {
-  const response = await axios.post(API_URL, user);
+export const addUser = async (user, csrfToken) => {
+  const response = await axios.post(API_URL, user, {
+    headers: {
+      "X-CSRF-TOKEN": csrfToken,
+    },
+    withCredentials: true,
+  });
   const result = response.data;
   localStorage.setItem("userId", result.id);
   return result;
-  // try {
-  //   const response = await axios.post(API_URL, user);
-  //   const result = response.data;
-  //   localStorage.setItem("userId", result.id);
-  //   return result;
-  // } catch (error) {
-  //   console.log("Error registering new user: ", error);
-  // }
 };
 
-export const deleteUser = async (id) => {
-  axios.delete(`${API_URL}/${id}`);
+export const deleteUser = async (id, csrfToken) => {
+  axios.delete(`${API_URL}/${id}`, {
+    headers: {
+      "X-CSRF-TOKEN": csrfToken,
+    },
+    withCredentials: true,
+  });
 };

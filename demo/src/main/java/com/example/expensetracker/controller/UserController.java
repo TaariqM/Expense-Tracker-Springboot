@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+// import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +22,7 @@ import com.example.expensetracker.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:5173") // allow React frontend to communicate with Springboot backend
+// @CrossOrigin(origins = "http://localhost:5173") // allow React frontend to communicate with Springboot backend
 public class UserController {
     private final UserService userService;
 
@@ -56,6 +56,7 @@ public class UserController {
     
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
+        System.out.println("User being added: " + user);
         return userService.addUser(user);
     }
     

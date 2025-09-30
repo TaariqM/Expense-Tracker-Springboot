@@ -15,12 +15,23 @@ export const getExpensesForFolder = async (userId, folderId) => {
   }
 };
 
-export const addExpenseToFolder = async (userId, folderId, expense) => {
+export const addExpenseToFolder = async (
+  userId,
+  folderId,
+  expense,
+  csrfToken
+) => {
   try {
     const response = await axios.post(
       `${API_URL}/${userId}/expenseFolders/${folderId}/expenses`,
       expense,
-      { header: { "Content-Type": "application/json" } }
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+        },
+        withCredentials: true,
+      }
     );
     const result = response.data;
     return result;
@@ -33,16 +44,19 @@ export const updateExpenseForFolder = async (
   userId,
   folderId,
   expenseId,
-  updatedExpense
+  updatedExpense,
+  csrfToken
 ) => {
   try {
     const response = await axios.put(
       `${API_URL}/${userId}/expenseFolders/${folderId}/expenses/${expenseId}`,
       updatedExpense,
       {
-        header: {
+        headers: {
           "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrfToken,
         },
+        withCredentials: true,
       }
     );
     const result = response.data;
@@ -51,10 +65,22 @@ export const updateExpenseForFolder = async (
     console.error("Error updating expense", err);
   }
 };
-export const deleteExpenseForFolder = async (userId, folderId, expenseId) => {
+
+export const deleteExpenseForFolder = async (
+  userId,
+  folderId,
+  expenseId,
+  csrfToken
+) => {
   try {
     const response = await axios.delete(
-      `${API_URL}/${userId}/expenseFolders/${folderId}/expenses/${expenseId}`
+      `${API_URL}/${userId}/expenseFolders/${folderId}/expenses/${expenseId}`,
+      {
+        headers: {
+          "X-CSRF-Token": csrfToken,
+        },
+        withCredentials: true,
+      }
     );
     const result = response.data;
     return result;

@@ -13,7 +13,7 @@ export const getFolders = async (userId) => {
   }
 };
 
-export const addFolder = async (userId, expenseFolder) => {
+export const addFolder = async (userId, expenseFolder, csrfToken) => {
   try {
     const response = await axios.post(
       `${API_URL}/${userId}/expenseFolders`,
@@ -21,7 +21,9 @@ export const addFolder = async (userId, expenseFolder) => {
       {
         headers: {
           "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrfToken,
         },
+        withCredentials: true,
       }
     );
     const result = response.data;
@@ -32,7 +34,12 @@ export const addFolder = async (userId, expenseFolder) => {
   }
 };
 
-export const modifyFolder = async (userId, expenseFolderId, expenseFolder) => {
+export const modifyFolder = async (
+  userId,
+  expenseFolderId,
+  expenseFolder,
+  csrfToken
+) => {
   try {
     const response = await axios.put(
       `${API_URL}/${userId}/expenseFolders/${expenseFolderId}`,
@@ -40,7 +47,9 @@ export const modifyFolder = async (userId, expenseFolderId, expenseFolder) => {
       {
         headers: {
           "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrfToken,
         },
+        withCredentials: true,
       }
     );
     const result = await response.data;
@@ -50,10 +59,16 @@ export const modifyFolder = async (userId, expenseFolderId, expenseFolder) => {
   }
 };
 
-export const deleteFolder = async (userId, expenseFolderId) => {
+export const deleteFolder = async (userId, expenseFolderId, csrfToken) => {
   try {
     const response = await axios.delete(
-      `${API_URL}/${userId}/expenseFolders/${expenseFolderId}`
+      `${API_URL}/${userId}/expenseFolders/${expenseFolderId}`,
+      {
+        headers: {
+          "X-CSRF-TOKEN": csrfToken,
+        },
+        withCredentials: true,
+      }
     );
     const result = await response.data;
     return result;

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import InputFields from "../components/input_fields/InputFields";
 import Button from "../components/button/Button";
 import { addUser } from "../services/UserService";
+import { useCsrf } from "../context/CsrfTokenContext";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -11,7 +12,7 @@ const Register = () => {
     email: "",
     password: "",
   });
-
+  const { csrfToken } = useCsrf();
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const btnName = "Register";
@@ -36,7 +37,7 @@ const Register = () => {
       return;
     }
     try {
-      const newUser = await addUser(user);
+      const newUser = await addUser(user, csrfToken);
       navigate(`/dashboard/${newUser.id}`);
     } catch (err) {
       // console.error("Failure submitting registration:", err);
